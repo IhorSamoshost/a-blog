@@ -2,7 +2,7 @@
   "name": "a_blog",
   "private": true,
   "engines": {
-    "node": "16.15.1"
+    "node": "^14.0.0"
   },
   "dependencies": {
     "@rails/actioncable": "^6.0.0",
