@@ -1,5 +1,7 @@
 class ArticlesController < ApplicationController
 
+  before_action :set_article, only: [:show, :edit, :update, :destroy]
+
   def index
     @articles = Article.all
   end
@@ -19,10 +21,10 @@ class ArticlesController < ApplicationController
 
   def create
     # render plain: params[:article]
-    @article = Article.new(params.require(:article).permit(:title, :description))
+    @article = Article.new(article_params)
     # render plain: @article.inspect
     if @article.save
-      flash[:notice] = "Article was created successfully!"
+      flash[:notice] = "Article with id=#{@article.id} was created successfully!"
       # redirect_to article_path(@article)
       redirect_to @article
     else
@@ -32,18 +34,29 @@ class ArticlesController < ApplicationController
 
   def update
     @article = Article.find(params[:id])
-    if @article.update(params.require(:article).permit(:title, :description))
-      flash[:notice] = "Article was updated successfully!"
+    if @article.update(article_params)
+      flash[:notice] = "Article with id=#{@article.id} was updated successfully!"
       redirect_to @article
     else
-      render 'edit'
+      render "edit"
     end
   end
 
   def destroy
-    @article - Article.find(params[:id])
+    @article = Article.find(params[:id])
     @article.destroy
+    flash[:notice] = "Article with id=#{@article.id} was deleted successfully!"
     redirect_to articles_path
+  end
+
+  private
+
+  def set_article
+    @article = Article.find(params[:id])
+  end
+
+  def article_params
+    params.require(:article).permit(:title, :description)
   end
 
   # from scaffolding:
