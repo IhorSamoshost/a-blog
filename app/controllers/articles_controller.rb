@@ -18,10 +18,8 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    # render plain: params[:article]
     @article = Article.new(article_params)
-    @article.user = User.first
-    # render plain: @article.inspect
+    @article.user = current_user
     if @article.save
       flash[:notice] = "Article with id=#{@article.id} was created successfully!"
       # redirect_to article_path(@article)
@@ -58,23 +56,6 @@ class ArticlesController < ApplicationController
 
   # from scaffolding:
   # before_action :set_article, only: %i[ show edit update destroy ]
-  #
-  # # GET /articles or /articles.json
-  # def index
-  #   @articles = Article.all
-  # end
-  #
-  # def show
-  # end
-  #
-  # # GET /articles/new
-  # def new
-  #   @article = Article.new
-  # end
-  #
-  # # GET /articles/1/edit
-  # def edit
-  # end
   #
   # # POST /articles or /articles.json
   # def create
@@ -113,15 +94,4 @@ class ArticlesController < ApplicationController
   #     format.json { head :no_content }
   #   end
   # end
-  #
-  # private
-  #   # Use callbacks to share common setup or constraints between actions.
-  #   def set_article
-  #     @article = Article.find(params[:id])
-  #   end
-  #
-  #   # Only allow a list of trusted parameters through.
-  #   def article_params
-  #     params.require(:article).permit(:title, :description)
-  #   end
 end
