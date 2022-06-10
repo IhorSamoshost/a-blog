@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:show]
+  before_action :set_category, only: [:show, :edit, :update]
   before_action :require_admin, except: [:index, :show]
 
   def index
@@ -17,11 +17,25 @@ class CategoriesController < ApplicationController
   def create
     @category = Category.new(category_params)
     if @category.save
-      flash[:notice] = "Category #{ @category.name } was successfully created!"
+      flash[:notice] = "Article category \"#{ @category.name }\" was successfully created!"
       redirect_to @category
     else
-      flash[:alert] = "Category is not created - something went wrong, try again!"
+      flash[:alert] = "Article category \"#{ @category.name }\" is not created - something went wrong, try again!"
       render "new"
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    old_name = @category.name
+    if @category.update(category_params)
+      flash[:notice] = "Article category name was updated successfully from \"#{ old_name }\" to \"#{ @category.name }\"!"
+      redirect_to @category
+    else
+      flash[:alert] = "Article category \"#{ old_name }\" is not updated - something went wrong, try again!"
+      render "edit"
     end
   end
 
